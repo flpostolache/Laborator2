@@ -7,6 +7,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.PopupWindow;
 
@@ -53,6 +54,37 @@ public class LifecycleMonitorActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onRestart() {
+        super.onRestart();
+        Log.d("activitylifecyclemonitor", "onRestart method was invoked");
+    }
+    @Override
+    protected void onStart(){
+        super.onStart();
+        Log.d("activitylifecyclemonitor", "onStart method was invoked");
+    }
+    @Override
+    protected void onResume(){
+        super.onResume();
+        Log.d("activitylifecyclemonitor", "onResume method was invoked");
+    }
+    @Override
+    protected void onPause(){
+        super.onPause();
+        Log.d("activitylifecyclemonitor", "onPause method was invoked");
+    }
+    @Override
+    protected void onStop(){
+        super.onStop();
+        Log.d("activitylifecyclemonitor", "onStop method was invoked");
+    }
+    @Override
+    protected void onDestroy(){
+        super.onDestroy();
+        Log.d("activitylifecyclemonitor", "onDestroy method was invoked");
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lifecycle_monitor);
@@ -61,8 +93,27 @@ public class LifecycleMonitorActivity extends AppCompatActivity {
         okButton.setOnClickListener(buttonClickListener);
         Button cancelButton = (Button) findViewById(R.id.cancel_button);
         cancelButton.setOnClickListener(buttonClickListener);
+        if (savedInstanceState != null)
+            Log.d(Constants.TAG, "onCreate() method was invoked without a previous state");
+        else
+            Log.d(Constants.TAG, "onCreate() method was invoked with a previous state");
+    }
 
-        Log.d(Constants.TAG, "onCreate() method was invoked without a previous state");
+    @Override
+    protected void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+        CheckBox Box = (CheckBox)findViewById(R.id.remember_me_checkbox);
+        savedInstanceState.putString(Constants.REMEMBER_ME_CHECKBOX, Box.getText().toString());
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        CheckBox Box = (CheckBox)findViewById(R.id.remember_me_checkbox);
+
+        if (savedInstanceState.getString(Constants.REMEMBER_ME_CHECKBOX) != null) {
+            Box.setText(savedInstanceState.getString(Constants.REMEMBER_ME_CHECKBOX));
+        }
     }
 
 }
